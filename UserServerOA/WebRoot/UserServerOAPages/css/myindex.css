@@ -1,0 +1,27 @@
+body{
+	background-image: url(../img/l_bg.jpg);
+}
+#login{
+	position: absolute;
+	float: left;
+}
+#parent{
+	margin-top: 3.5%;
+	margin-left: -2%;
+	width: 1001px;
+	height: 690px;
+	background-image: url(../img/ov2.jpg);
+	z-index: 1;
+}
+#ipt{
+	width: 250px;
+	height: 100px;
+}
+table{
+	margin-left: 5%;
+	margin-top: 8%;
+}
+#msg{
+	text-align: center;
+	color:red;
+}
