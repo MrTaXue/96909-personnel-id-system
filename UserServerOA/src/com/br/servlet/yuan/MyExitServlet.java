@@ -13,9 +13,9 @@ import javax.servlet.http.HttpSession;
 public class MyExitServlet extends HttpServlet {
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		this.doPost(req, resp);
+		this.doPost(request, response);
 	}
 
 	@Override
