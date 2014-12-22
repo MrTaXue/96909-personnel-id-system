@@ -78,7 +78,6 @@ public class AccountsDaoImpl implements IAccountsDao {
 	public int updateById(Accounts entity) throws SQLException {
 		int iline = -1;
 		String sql ="update accounts set accname = '"+entity.getAccName()+"',fname='"+entity.getfName()+"',aemail='"+entity.getaEmail()+"',accpwd='"+entity.getAccPwd()+"',accstate='"+entity.getAccState()+"',companygrand='"+entity.getCompanyGrand()+"',companyid='"+entity.getCompanyId()+"' where accountid="+entity.getAccountId();
-		System.out.println(sql);
 		iline = DBHelper.myExecuteUpdate(sql, null);
 		return iline;
 	}
@@ -86,7 +85,7 @@ public class AccountsDaoImpl implements IAccountsDao {
 	@Override
 	public int deleteById(String ids) throws SQLException {
 		int iline = 0;
-		String sql = "delete from accounts where accountid in ( '"+ids+"' )";
+		String sql = "delete from accounts where accountid in ( "+ids+")";
 		iline = DBHelper.myExecuteUpdate(sql, null);
 		return iline;
 	}

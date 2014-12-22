@@ -404,43 +404,24 @@
 						var rows = $("#datagrid").datagrid('getSelections');
 						//得到当前被选中行的索引
 						if (rows.length > 0) {
-							$.messager
-									.confirm(
-											'请确认',
-											'您确定要删除当前记录吗？',
-											function(r) {
-												if (r) {
-													var ids = [];
-													for ( var i = 0; i < rows.length; i++) {
-														ids
-																.push(rows[i].employerId);
-													}
-													$
-															.post(
-																	projectName
-																			+ '/emp?action='
-																			+ ids,
-																	function(
-																			msg) {
-																		$(
-																				"#datagrid")
-																				.datagrid(
-																						'load',
-																						{});
-																		$(
-																				"#datagrid")
-																				.datagrid(
-																						'unselectAll');
-																		$.messager
-																				.show({
-																					title : '提示信息',
-																					msg : msg,
-																					timeout : 3000,
-																					showType : 'slide'
-																				});
-																	});
-												}
-											});
+							$.messager.confirm('请确认','您确定要删除当前记录吗？',function(r) {
+								if (r) {
+									var ids = [];
+									for ( var i = 0; i < rows.length; i++) {
+										ids.push(rows[i].employerId);
+									}
+									$.post(projectName+ '/emp?action='+ ids,function(msg) {
+										$("#datagrid").datagrid('load',{});
+										$("#datagrid").datagrid('unselectAll');
+										$.messager.show({
+											title : '提示信息',
+											msg : msg,
+											timeout : 3000,
+											showType : 'slide'
+										});
+									});
+								}
+							});
 						} else {
 							$.messager.show({
 								title : '提示信息',
@@ -450,35 +431,24 @@
 							});
 						}
 					}
-				},
-				'-',
+				},'-',
 				{
 					text : '修改',
 					iconCls : 'icon-edit',
 					handler : function() {
-						var rows = $("#datagrid").datagrid(
-								'getSelections');
+						var rows = $("#datagrid").datagrid('getSelections');
 						if (rows.length == 1) {
 							if (editRow != undefined) {
-								$("#datagrid").datagrid(
-										'endEdit', editRow);
+								$("#datagrid").datagrid('endEdit', editRow);
 							}
 							if (editRow == undefined) {
-								var rowsindex = $(
-										"#datagrid")
-										.datagrid(
-												'getRowIndex',
-												rows[0]);
-	
-								$("#datagrid").datagrid(
-										'beginEdit',
-										rowsindex);
+								var rowsindex = $("#datagrid").datagrid('getRowIndex',rows[0]);
+								$("#datagrid").datagrid('beginEdit',rowsindex);
 								editRow = rowsindex;
 							}
 						}
 					}
-				},
-				'-',
+				},'-',
 				{
 					text : '查找',
 					iconCls : 'icon-search',
@@ -491,8 +461,7 @@
 					text : '保存',
 					iconCls : 'icon-save',
 					handler : function() {
-						$("#datagrid").datagrid('endEdit',
-								editRow);
+						$("#datagrid").datagrid('endEdit',editRow);
 					}
 				},
 				'-',
@@ -500,19 +469,15 @@
 					text : '取消编辑',
 					iconCls : 'icon-redo',
 					handler : function() {
-						$("#datagrid").datagrid(
-								'rejectChanges');
-						$("#datagrid").datagrid(
-								'unselectAll');
+						$("#datagrid").datagrid('rejectChanges');
+						$("#datagrid").datagrid('unselectAll');
 						editRow = undefined;
 					}
 				}, '-' 
 			],
 			onAfterEdit : function(rowIndex, rowData, changes) {
-				var inserted = $("#datagrid").datagrid(
-						'getChanges', 'inserted');
-				var updated = $("#datagrid").datagrid(
-						'getChanges', 'updated');
+				var inserted = $("#datagrid").datagrid('getChanges', 'inserted');
+				var updated = $("#datagrid").datagrid('getChanges', 'updated');
 				var urlemp = '';
 				if (inserted.length < 1 && updated.length < 1) {
 					editRow = undefined;
@@ -523,13 +488,11 @@
 					urlemp = projectName + '/emp?action=empadd';
 				}
 				if (updated.length > 0) {
-					urlemp = projectName
-							+ '/emp?action=empupdate';
+					urlemp = projectName + '/emp?action=empupdate';
 				}
 				$.post(urlemp, rowData, function(result) {
 					if (result == '修改成功！') {
-						$("#datagrid")
-								.datagrid('acceptChanges');
+						$("#datagrid").datagrid('acceptChanges');
 						$.messager.show({
 							title : '提示信息',
 							msg : '修改成功！',
@@ -537,8 +500,7 @@
 							showType : 'slide'
 						});
 					} else if (result == '添加成功！') {
-						$("#datagrid")
-								.datagrid('acceptChanges');
+						$("#datagrid").datagrid('acceptChanges');
 						$.messager.show({
 							title : '提示信息',
 							msg : '添加成功！',
@@ -546,8 +508,7 @@
 							showType : 'slide'
 						});
 					} else {
-						$("#datagrid")
-								.datagrid('rejectChanges');
+						$("#datagrid").datagrid('rejectChanges');
 						$.messager.show({
 							title : '提示信息',
 							msg : '操作失败！',
@@ -565,20 +526,10 @@
 					$("#datagrid").datagrid('endEdit', editRow);
 				}
 				if (editRow == undefined) {
-					$("#datagrid").datagrid('beginEdit',
-							rowIndex);
+					$("#datagrid").datagrid('beginEdit',rowIndex);
 					editRow = rowIndex;
 				}
 			},
-			onRowContextMenu : function(e, rowIndex, rowData) {
-				e.preventDefault();
-				$(this).datagrid('unselectAll');
-				$(this).datagrid('selectRow', rowIndex);
-				$('#empmenu').menu('show', {
-					left : e.pageX,
-					top : e.pageY
-				});
-			}
 		});
 		function empfind() {
 			$("#emplayout").layout('expand', 'north');
@@ -586,151 +537,136 @@
 		;
 	});
 </script>
-<style>
-th {
-	text-align: right;
-}
+<div id="emplayout" fit="true" class="easyui-layout">
+	<div id="north"
+		data-options="region:'north',fit:true,iconCls:'icon-search',border:false,title:'筛选'">
 
-td {
-	text-align: left;
-}
-</style>
-	<div id="emplayout" fit="true" class="easyui-layout">
-		<div id="north"
-			data-options="region:'north',fit:true,iconCls:'icon-search',border:false,title:'筛选'">
+		<form id="empfindform" method="post">
+			<table class="empfind datagrid-toolbar">
+				<tr>
+					<th>雇主编号</th>
+					<td><input type="text" id="employerId" name="employerId"
+						value="" /></td>
+					<th>公司编号</th>
+					<td><input type="text" id="comId" name="comId" value="" /></td>
+					<th>姓名</th>
+					<td><input type="text" id="fName" name="fName" value="" /></td>
 
-			<form id="empfindform" method="post">
-				<table class="empfind datagrid-toolbar">
-					<tr>
-						<th>雇主编号</th>
-						<td><input type="text" id="employerId" name="employerId"
-							value="" /></td>
-						<th>公司编号</th>
-						<td><input type="text" id="comId" name="comId" value="" /></td>
-						<th>姓名</th>
-						<td><input type="text" id="fName" name="fName" value="" /></td>
-
-					</tr>
-					<tr>
-						<th>性别</th>
-						<td><input type="radio" name="wSex" id="wSex" value="男" />男
-							<input type="radio" name="wSex" id="wSex" value="女" />女</td>
-						<th>年龄</th>
-						<td><input type="text" id="age1" name="age1" value="" />至 <input
-							type="text" id="age2" name="age2" value="" /></td>
-						<th>民族</th>
-						<td><input type="text" id="enation" name="enation" value="" />
-						</td>
-					</tr>
-					<tr>
-						<th>籍贯</th>
-						<td><input type="text" id="empNative" name="empNative"
-							value="" /></td>
-						<th>学历</th>
-						<td><input type="text" id="schoolAge" name="schoolAge"
-							value="" /></td>
-						<th>身份证号</th>
-						<td><input type="text" id="cardNum" name="cardNum" value="" />
-						</td>
-					</tr>
-					<tr>
-						<th>工作单位</th>
-						<td><input type="text" id="workerUnit" name="workerUnit"
-							value="" /></td>
-						<th>职业</th>
-						<td><input type="text" id="profession" name="profession"
-							value="" /></td>
-						<th>合同号</th>
-						<td><input type="text" id="bargainNum" name="bargainNum"
-							value="" /></td>
-					</tr>
-					<tr>
-						<th>合同期限</th>
-						<td><input type="text" id="bargainDate1" name="bargainDate1"
-							class="easyui-datetimebox" editable="false" value="" />至<input
-							type="text" id="bargainDate2" name="bargainDate2"
-							class="easyui-datetimebox" editable="false" value="" /></td>
-						<th>电话号</th>
-						<td><input type="text" id="phone" name="phone" value="" /></td>
-						<th>手机号</th>
-						<td><input type="text" id="mobilePhone" name="mobilePhone"
-							value="" /></td>
-					</tr>
-					<tr>
-						<th>住宅</th>
-						<td><input type="text" id="empAddress" name="empAddress"
-							value="" /></td>
-						<th>户口所在地</th>
-						<td><input type="text" id="empRegistered"
-							name="empRegistered" value="" /></td>
-						<th>服务处地址</th>
-						<td><input type="text" id="serveAddress" name="serveAddress"
-							value="" /></td>
-					</tr>
-					<tr>
-						<th>居住地址</th>
-						<td><input type="text" id="familyAddress"
-							name="familyAddress" value="" /></td>
-						<th>家庭人数</th>
-						<td><input type="text" id="familyNum" name="familyNum"
-							value="" /></td>
-						<th>雇佣要求</th>
-						<td><input type="text" id="empRequestBaseid"
-							name="empRequestBaseid" value="" /></td>
-					</tr>
-					<tr>
-						<th>服务内容</th>
-						<td><input type="text" id="familyContent"
-							name="familyContent" value="" /></td>
-						<th>房屋面积</th>
-						<td><input type="text" id="familyArea" name="familyArea"
-							value="" /></td>
-						<th>饮食习惯</th>
-						<td><input type="text" id="familyEat" name="familyEat"
-							value="" /></td>
-					</tr>
-					<tr>
-						<th>经办人</th>
-						<td><input type="text" id="handlers" name="handlers" value="" />
-						</td>
-						<th>接受的最低工资</th>
-						<td><input type="text" id="minSalary" name="minSalary"
-							value="" /></td>
-						<th>接受的最高工资</th>
-						<td><input type="text" id="maxSalary" name="maxSalary"
-							value="" /></td>
-					</tr>
-					<tr>
-						<th>登记时间</th>
-						<td><input type="text" id="handlersDate1"
-							name="handlersDate1" class="easyui-datetimebox" editable="false"
-							value="" />至<input type="text" id="handlersDate2"
-							name="handlersDate2" class="easyui-datetimebox" editable="false"
-							value="" /></td>
-						<th>出生日期</th>
-						<td><input type="text" id="birthday1" name="birthday1"
-							class="easyui-datetimebox" editable="false" value="" />至<input
-							type="text" id="birthday2" name="birthday2"
-							class="easyui-datetimebox" editable="false" value="" /></td>
-						<th></th>
-						<td><a id="empbtnqrcx" href="#" class="easyui-linkbutton"
-							data-options="iconCls:'icon-search',plain:true"
-							onClick="empbtnqrcx()">确认筛选</a> <a id="empbtnchz" href="#"
-							class="easyui-linkbutton"
-							data-options="iconCls:'icon-clear',plain:true"
-							onClick="empbtnchz()">重置条件</a>
-						</td>
-					</tr>
-				</table>
-			</form>
-		</div>
-		<div data-options="region:'center'">
-			<table id="datagrid"></table>
-		</div>
-		<div id="empmenu" class="easyui-menu"
-			style="width:120px;display:none;">
-			<div onClick="emprightappend()" iconCls="icon-add">增加</div>
-			<div onClick="emprightremove()" iconCls="icon-remove">删除</div>
-			<div onClick="emprightedit()" iconCls="icon-edit">修改</div>
-		</div>
+				</tr>
+				<tr>
+					<th>性别</th>
+					<td><input type="radio" name="wSex" id="wSex" value="男" />男
+						<input type="radio" name="wSex" id="wSex" value="女" />女</td>
+					<th>年龄</th>
+					<td><input type="text" id="age1" name="age1" value="" />至 <input
+						type="text" id="age2" name="age2" value="" /></td>
+					<th>民族</th>
+					<td><input type="text" id="enation" name="enation" value="" />
+					</td>
+				</tr>
+				<tr>
+					<th>籍贯</th>
+					<td><input type="text" id="empNative" name="empNative"
+						value="" /></td>
+					<th>学历</th>
+					<td><input type="text" id="schoolAge" name="schoolAge"
+						value="" /></td>
+					<th>身份证号</th>
+					<td><input type="text" id="cardNum" name="cardNum" value="" />
+					</td>
+				</tr>
+				<tr>
+					<th>工作单位</th>
+					<td><input type="text" id="workerUnit" name="workerUnit"
+						value="" /></td>
+					<th>职业</th>
+					<td><input type="text" id="profession" name="profession"
+						value="" /></td>
+					<th>合同号</th>
+					<td><input type="text" id="bargainNum" name="bargainNum"
+						value="" /></td>
+				</tr>
+				<tr>
+					<th>合同期限</th>
+					<td><input type="text" id="bargainDate1" name="bargainDate1"
+						class="easyui-datetimebox" editable="false" value="" />至<input
+						type="text" id="bargainDate2" name="bargainDate2"
+						class="easyui-datetimebox" editable="false" value="" /></td>
+					<th>电话号</th>
+					<td><input type="text" id="phone" name="phone" value="" /></td>
+					<th>手机号</th>
+					<td><input type="text" id="mobilePhone" name="mobilePhone"
+						value="" /></td>
+				</tr>
+				<tr>
+					<th>住宅</th>
+					<td><input type="text" id="empAddress" name="empAddress"
+						value="" /></td>
+					<th>户口所在地</th>
+					<td><input type="text" id="empRegistered"
+						name="empRegistered" value="" /></td>
+					<th>服务处地址</th>
+					<td><input type="text" id="serveAddress" name="serveAddress"
+						value="" /></td>
+				</tr>
+				<tr>
+					<th>居住地址</th>
+					<td><input type="text" id="familyAddress"
+						name="familyAddress" value="" /></td>
+					<th>家庭人数</th>
+					<td><input type="text" id="familyNum" name="familyNum"
+						value="" /></td>
+					<th>雇佣要求</th>
+					<td><input type="text" id="empRequestBaseid"
+						name="empRequestBaseid" value="" /></td>
+				</tr>
+				<tr>
+					<th>服务内容</th>
+					<td><input type="text" id="familyContent"
+						name="familyContent" value="" /></td>
+					<th>房屋面积</th>
+					<td><input type="text" id="familyArea" name="familyArea"
+						value="" /></td>
+					<th>饮食习惯</th>
+					<td><input type="text" id="familyEat" name="familyEat"
+						value="" /></td>
+				</tr>
+				<tr>
+					<th>经办人</th>
+					<td><input type="text" id="handlers" name="handlers" value="" />
+					</td>
+					<th>接受的最低工资</th>
+					<td><input type="text" id="minSalary" name="minSalary"
+						value="" /></td>
+					<th>接受的最高工资</th>
+					<td><input type="text" id="maxSalary" name="maxSalary"
+						value="" /></td>
+				</tr>
+				<tr>
+					<th>登记时间</th>
+					<td><input type="text" id="handlersDate1"
+						name="handlersDate1" class="easyui-datetimebox" editable="false"
+						value="" />至<input type="text" id="handlersDate2"
+						name="handlersDate2" class="easyui-datetimebox" editable="false"
+						value="" /></td>
+					<th>出生日期</th>
+					<td><input type="text" id="birthday1" name="birthday1"
+						class="easyui-datetimebox" editable="false" value="" />至<input
+						type="text" id="birthday2" name="birthday2"
+						class="easyui-datetimebox" editable="false" value="" /></td>
+					<th></th>
+					<td><a id="empbtnqrcx" href="#" class="easyui-linkbutton"
+						data-options="iconCls:'icon-search',plain:true"
+						onClick="empbtnqrcx()">确认筛选</a> <a id="empbtnchz" href="#"
+						class="easyui-linkbutton"
+						data-options="iconCls:'icon-clear',plain:true"
+						onClick="empbtnchz()">重置条件</a>
+					</td>
+				</tr>
+			</table>
+		</form>
 	</div>
+	<div data-options="region:'center'">
+		<table id="datagrid"></table>
+	</div>
+</div>
