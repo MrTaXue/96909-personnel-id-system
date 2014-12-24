@@ -20,7 +20,7 @@
 <script src="UserServerOAPages/JQueryEasyUI/locale/easyui-lang-zh_CN.js" type="text/javascript" charset="utf-8"></script>
 <link rel="stylesheet" href="UserServerOAPages/css/protal.css" type="text/css"></link>
 <script type="text/javascript" src="UserServerOAPages/js/index.js"></script>
-<link rel="stylesheet" href="UserServerOAPages/css/emp.css" type="text/css"></link>
+<link rel="stylesheet" href="UserServerOAPages/css/findtable.css" type="text/css"></link>
 <!--  	
 		body里是用easyui的另外一种定义方式class定义的layout，
 		具体的属性可以翻看api，
